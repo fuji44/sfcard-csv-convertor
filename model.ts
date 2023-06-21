@@ -12,7 +12,8 @@ export type SFCardTicketGateInfo = {
 
 /** SFCard Viewer の1レコードを表現する */
 export type SFCardRecord = {
-  timestamp: Date;
+  /** 日付 (ISO8601年月日拡張形式) */
+  timestamp: string;
   /** 入場時の改札情報 */
   from: SFCardTicketGateInfo;
   /** 出場時の改札情報 */
@@ -25,7 +26,7 @@ export type SFCardRecord = {
   memo: string;
 };
 
-/** SFCard Viewer のCSVを */
+/** SFCard Viewer の CSV を表現する */
 export class SFCardCsvLoader {
   csvPath: string;
   records: SFCardRecord[];
@@ -52,7 +53,7 @@ export class SFCardCsvLoader {
         switch (col) {
           case 0:
             // 利用年月日
-            record.timestamp = new Date(cell);
+            record.timestamp = cell.replaceAll("/", "-");
             break;
           case 1:
             // 定期
