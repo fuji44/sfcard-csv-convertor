@@ -26,6 +26,33 @@ export type SFCardRecord = {
   memo: string;
 };
 
+export function toSFCardCsvRecord(r: SFCardRecord) {
+  return [
+    convertSFCardStyleDate(r.timestamp),
+    toStringForSFCardStyleBoolean(r.from.isCommuterPass),
+    r.from.companyName,
+    r.from.stationName,
+    toStringForSFCardStyleBoolean(r.to.isCommuterPass),
+    r.to.companyName,
+    r.to.stationName,
+    r.amountYen,
+    r.remainingAmountYen,
+    r.memo,
+  ];
+}
+
+export function convertSFCardStyleDate(date: string) {
+  return date.replaceAll("-", "/");
+}
+
+export function convertISO8601Date(date: string) {
+  return date.replaceAll("/", "-");
+}
+
+export function toStringForSFCardStyleBoolean(bool: boolean) {
+  return bool ? "〇" : "";
+}
+
 /** SFCard Viewer の CSV を表現する */
 export class SFCardCsvLoader {
   csvPath: string;
@@ -53,7 +80,7 @@ export class SFCardCsvLoader {
         switch (col) {
           case 0:
             // 利用年月日
-            record.timestamp = cell.replaceAll("/", "-");
+            record.timestamp = convertISO8601Date(cell);
             break;
           case 1:
             // 定期
