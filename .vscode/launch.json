@@ -14,6 +14,34 @@
         "--allow-all"
       ],
       "attachSimplePort": 9229
+    },
+    {
+      "request": "launch",
+      "name": "Run cli to csv: basic csv",
+      "type": "node",
+      "program": "./cli.ts",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "deno",
+      "runtimeArgs": [
+        "run",
+        "--inspect-wait",
+        "--allow-all"
+      ],
+      "args": [
+        "csv",
+        "./tests/basic.csv",
+        "-t",
+        "${input:templates}"
+      ],
+      "attachSimplePort": 9229
+    }
+  ],
+  "inputs": [
+    {
+      "id": "templates",
+      "description": "Input template keys. ex. timestamp,amountYen,memo",
+      "type": "promptString",
+      "default": "timestamp,amountYen,memo"
     }
   ]
 }
