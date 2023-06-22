@@ -8,6 +8,8 @@
     "compile:mac": "deno task compile:mac_x86 & deno task compile:mac_arm",
     "compile:mac_x86": "deno compile --allow-read --target=x86_64-apple-darwin --output ./dist/mac_x86_64/sfcc ./cli.ts",
     "compile:mac_arm": "deno compile --allow-read --target=aarch64-apple-darwin --output ./dist/mac_aarch64/sfcc ./cli.ts",
-    "compile:linux": "deno compile --allow-read --target=x86_64-unknown-linux-gnu --output ./dist/linux_x86_64/sfcc ./cli.ts"
+    "compile:linux": "deno compile --allow-read --target=x86_64-unknown-linux-gnu --output ./dist/linux_x86_64/sfcc ./cli.ts",
+    "install": "deno install --allow-read -n sfcc ./cli.ts",
+    "uninstall": "deno uninstall sfcc"
   }
 }
