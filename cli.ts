@@ -1,5 +1,9 @@
 import { Command } from "https://deno.land/x/cliffy@v0.25.7/command/mod.ts";
-import { SFCardCsvLoader, SFCardRecord, toSFCardCsvRecord } from "./model.ts";
+import {
+  SFCardCsvLoader,
+  SFCardRecord,
+  toArraySFCardStyleRecord,
+} from "./model.ts";
 
 function printJson(records: SFCardRecord[]) {
   console.log(JSON.stringify(records));
@@ -7,7 +11,7 @@ function printJson(records: SFCardRecord[]) {
 
 function printSFCardCsv(records: SFCardRecord[]) {
   console.log(
-    records.map((r) => toSFCardCsvRecord(r).join(",")).join("\r\n"),
+    records.map((r) => toArraySFCardStyleRecord(r).join(",")).join("\r\n"),
   );
 }
 

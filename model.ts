@@ -28,9 +28,9 @@ export type SFCardRecord = {
   memo: string;
 };
 
-export function toSFCardCsvRecord(r: SFCardRecord) {
+export function toArraySFCardStyleRecord(r: SFCardRecord) {
   return [
-    convertSFCardStyleDate(r.timestamp),
+    convertSFCardStyleDateString(r.timestamp),
     toStringForSFCardStyleBoolean(r.from.isCommuterPass),
     r.from.companyName,
     r.from.stationName,
@@ -43,11 +43,11 @@ export function toSFCardCsvRecord(r: SFCardRecord) {
   ];
 }
 
-export function convertSFCardStyleDate(date: string) {
+export function convertSFCardStyleDateString(date: string) {
   return date.replaceAll("-", "/");
 }
 
-export function convertISO8601Date(date: string) {
+export function convertIso8601DateString(date: string) {
   return date.replaceAll("/", "-");
 }
 
@@ -91,7 +91,7 @@ export class SFCardCsvLoader {
             if (cell === "利用年月日") {
               continue readLine;
             }
-            record.timestamp = convertISO8601Date(cell);
+            record.timestamp = convertIso8601DateString(cell);
             break;
           case 1:
             // 定期
