@@ -1,5 +1,59 @@
 import { readCSV } from "https://deno.land/x/csv@v0.8.0/reader.ts";
 
+export const templateKeyArray = [
+  "cardId",
+  "timestamp",
+  "from.isCommuterPass",
+  "from.companyName",
+  "from.stationName",
+  "to.isCommuterPass",
+  "to.companyName",
+  "to.stationName",
+  "amountYen",
+  "remainingAmountYen",
+  "memo",
+] as const;
+
+export type TemplateKey = typeof templateKeyArray[number];
+
+export function isTemplateKey(value: string): value is TemplateKey {
+  return (templateKeyArray as readonly string[]).includes(value);
+}
+
+export function isTemplateKeys(values: string[]): values is TemplateKey[] {
+  return values.every((key) => isTemplateKey(key));
+}
+
+export const templates = {
+  /** SFCard Viewer CSV と同じ形式 */
+  SFCardOriginal: [
+    "timestamp",
+    "from.isCommuterPass",
+    "from.companyName",
+    "from.stationName",
+    "to.isCommuterPass",
+    "to.companyName",
+    "to.stationName",
+    "amountYen",
+    "remainingAmountYen",
+    "memo",
+  ],
+  /** SFCard Viewer CSV にカードIDを追加した形式 */
+  SFCardAddCardId: [
+    "cardId",
+    "timestamp",
+    "from.isCommuterPass",
+    "from.companyName",
+    "from.stationName",
+    "to.isCommuterPass",
+    "to.companyName",
+    "to.stationName",
+    "amountYen",
+    "remainingAmountYen",
+    "memo",
+  ],
+};
+
 /** 改札した際の情報を表現する */
 export type SFCardTicketGateInfo = {
   /** 定期の区間内か？ */
@@ -28,19 +82,38 @@ export type SFCardRecord = {
   memo: string;
 };
 
-export function toArraySFCardStyleRecord(r: SFCardRecord) {
-  return [
-    convertSFCardStyleDateString(r.timestamp),
-    toStringForSFCardStyleBoolean(r.from.isCommuterPass),
-    r.from.companyName,
-    r.from.stationName,
-    toStringForSFCardStyleBoolean(r.to.isCommuterPass),
-    r.to.companyName,
-    r.to.stationName,
-    r.amountYen,
-    r.remainingAmountYen,
-    r.memo,
-  ];
+export function toStringArray(
+  r: SFCardRecord,
+  template: TemplateKey[],
+): string[] {
+  return template.map((key) => {
+    switch (key) {
+      case "cardId":
+        return r.cardId;
+      case "timestamp":
+        return convertSFCardStyleDateString(r.timestamp);
+      case "from.isCommuterPass":
+        return toStringForSFCardStyleBoolean(r.from.isCommuterPass);
+      case "from.companyName":
+        return r.from.companyName;
+      case "from.stationName":
+        return r.from.stationName;
+      case "to.isCommuterPass":
+        return toStringForSFCardStyleBoolean(r.to.isCommuterPass);
+      case "to.companyName":
+        return r.to.companyName;
+      case "to.stationName":
+        return r.to.stationName;
+      case "amountYen":
+        return r.amountYen.toString();
+      case "remainingAmountYen":
+        return r.remainingAmountYen.toString();
+      case "memo":
+        return r.memo;
+      default:
+        throw new Error(`unknown key ${key}`);
+    }
+  });
 }
 
 export function convertSFCardStyleDateString(date: string) {
