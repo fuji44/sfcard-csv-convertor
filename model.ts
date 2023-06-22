@@ -12,6 +12,8 @@ export type SFCardTicketGateInfo = {
 
 /** SFCard Viewer の1レコードを表現する */
 export type SFCardRecord = {
+  /** CSVの1行目のカードID */
+  cardId: string;
   /** 日付 (ISO8601年月日拡張形式) */
   timestamp: string;
   /** 入場時の改札情報 */
@@ -57,6 +59,7 @@ export function toStringForSFCardStyleBoolean(bool: boolean) {
 export class SFCardCsvLoader {
   csvPath: string;
   records: SFCardRecord[];
+  cardId?: string;
 
   constructor(csvPath: string) {
     this.csvPath = csvPath;
@@ -65,10 +68,11 @@ export class SFCardCsvLoader {
 
   async load() {
     const f = await Deno.open(this.csvPath, { read: true, write: false });
+    readLine:
     for await (
       const row of readCSV(f, {
         encoding: "SJIS",
-        fromLine: 2,
+        fromLine: 0,
         lineSeparator: "\r\n",
       })
     ) {
@@ -77,9 +81,16 @@ export class SFCardCsvLoader {
       const to: Partial<SFCardTicketGateInfo> = {};
       let col = 0;
       for await (const cell of row) {
+        if (cell.startsWith("カードID=")) {
+          this.cardId = cell.split("=")[1];
+          continue readLine;
+        }
         switch (col) {
           case 0:
             // 利用年月日
+            if (cell === "利用年月日") {
+              continue readLine;
+            }
             record.timestamp = convertISO8601Date(cell);
             break;
           case 1:
@@ -128,8 +139,11 @@ export class SFCardCsvLoader {
       if (Object.keys(from).length > 0) {
         record.from = from as SFCardTicketGateInfo;
       }
-      if (Object.keys(to).length > 0) record.to = to as SFCardTicketGateInfo;
+      if (Object.keys(to).length > 0) {
+        record.to = to as SFCardTicketGateInfo;
+      }
       if (Object.keys(record).length > 0) {
+        if (this.cardId) record.cardId = this.cardId;
         this.records.push(record as SFCardRecord);
       }
     }
