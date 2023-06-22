@@ -1,12 +1,13 @@
 {
   "tasks": {
     "test": "deno test --allow-read",
+    "run": "deno run --allow-read ./cli.ts",
     "clean": "rm -rf dist/",
     "compile": "deno task compile:win & deno task compile:mac & deno task compile:linux",
-    "compile:win": "deno compile --allow-read --target=x86_64-pc-windows-msvc --output ./dist/win_x86_64/sfcv ./main.ts",
+    "compile:win": "deno compile --allow-read --target=x86_64-pc-windows-msvc --output ./dist/win_x86_64/sfcv ./cli.ts",
     "compile:mac": "deno task compile:mac_x86 & deno task compile:mac_arm",
-    "compile:mac_x86": "deno compile --allow-read --target=x86_64-apple-darwin --output ./dist/mac_x86_64/sfcv ./main.ts",
-    "compile:mac_arm": "deno compile --allow-read --target=aarch64-apple-darwin --output ./dist/mac_aarch64/sfcv ./main.ts",
-    "compile:linux": "deno compile --allow-read --target=x86_64-unknown-linux-gnu --output ./dist/linux_x86_64/sfcv ./main.ts"
+    "compile:mac_x86": "deno compile --allow-read --target=x86_64-apple-darwin --output ./dist/mac_x86_64/sfcv ./cli.ts",
+    "compile:mac_arm": "deno compile --allow-read --target=aarch64-apple-darwin --output ./dist/mac_aarch64/sfcv ./cli.ts",
+    "compile:linux": "deno compile --allow-read --target=x86_64-unknown-linux-gnu --output ./dist/linux_x86_64/sfcv ./cli.ts"
   }
 }
