@@ -26,7 +26,7 @@ function printJson(records: SFCardRecord[]) {
   console.log(JSON.stringify(records));
 }
 
-function printCsv(records: SFCardRecord[], template: string[]) {
+function printCsv(records: SFCardRecord[], template: TemplateKey[]) {
   console.log(
     records.map((r) => toStringArray(r, template).join(",")).join("\r\n"),
   );
