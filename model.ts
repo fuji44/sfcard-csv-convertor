@@ -68,7 +68,7 @@ export class SFCardCsvLoader {
     for await (
       const row of readCSV(f, {
         encoding: "SJIS",
-        fromLine: 1,
+        fromLine: 2,
         lineSeparator: "\r\n",
       })
     ) {
