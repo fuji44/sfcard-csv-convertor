@@ -8,7 +8,7 @@ Converts CSV files exported by
 Install
 
 ```shell
-deno install --allow-read -n sfcc https://raw.githubusercontent.com/fuji44/sfcard-csv-convertor/main/cli.ts
+deno install --allow-read -n sfcc https://raw.githubusercontent.com/fuji44/sfcard-csv-convertor/v0.1.0/cli.ts
 ```
 
 Uninstall
