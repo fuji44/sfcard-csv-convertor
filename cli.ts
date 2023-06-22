@@ -17,7 +17,7 @@ function createJsonCommand() {
 }
 
 await new Command()
-  .name("sfcv")
+  .name("sfcc")
   .description("SFCard Viewerで出力したCSVを変換します")
   .version("v0.1.0")
   .command("json", createJsonCommand())
