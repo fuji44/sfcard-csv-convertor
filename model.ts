@@ -37,7 +37,7 @@ export const templates = {
     "amountYen",
     "remainingAmountYen",
     "memo",
-  ],
+  ] as TemplateKey[],
   /** SFCard Viewer CSV にカードIDを追加した形式 */
   SFCardAddCardId: [
     "cardId",
@@ -51,7 +51,7 @@ export const templates = {
     "amountYen",
     "remainingAmountYen",
     "memo",
-  ],
+  ] as TemplateKey[],
 };
 
 /** 改札した際の情報を表現する */

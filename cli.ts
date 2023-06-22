@@ -44,20 +44,23 @@ function createJsonCommand() {
 }
 
 function createCsvCommand() {
+  const templateDescription =
+    `出力するCSVの1行を表現するテンプレート文字列を指定します。
+使用可能なキー: ${templateKeyArray.join(", ")}
+例: 'timestamp,amountYen,memo'`;
   return new Command()
     .description("異なるフォーマットのCSVに変換します")
     .arguments("<csv-path:string>")
     .type("template-keys", templateKeys)
     .option(
       "-t, --template=<keys:template-keys>",
-      "出力するCSVの1行を表現するテンプレート文字列を指定します",
+      templateDescription,
       { default: templates.SFCardOriginal },
     )
     .action(async ({ template }, csvPath) => {
       const loader = new SFCardCsvLoader(csvPath);
       await loader.load();
-      // templateKey によって TemplateKey[] であることが確定しているので as cast を許容
-      printCsv(loader.records, template as TemplateKey[]);
+      printCsv(loader.records, template);
     });
 }
 
